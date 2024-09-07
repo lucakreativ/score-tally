@@ -1,0 +1,42 @@
+body {
+    background-image: url('https://www.pixelstalk.net/wp-content/uploads/2016/08/Best-Background-Wallpapers-HD.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+html {
+    height: 100%;
+}
+
+#score {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+#score h1 {
+    font-size: 3em;
+    margin: 0;
+    padding: 1em;
+}
+
+#day-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#day {
+    background-color: grey;
+    width: 100px;
+    height: 100px;
+    margin-left: 5px;
+    margin-right: 5px;
+    opacity: 0.8;
+    border-radius: 30px;
+}
