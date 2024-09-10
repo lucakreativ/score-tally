@@ -27,11 +27,11 @@ html {
 
 #day-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: left;
+    align-items: left;
 }
 
-#day {
+.day {
     background-color: grey;
     width: 100px;
     height: 100px;
