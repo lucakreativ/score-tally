@@ -3,6 +3,15 @@ from flask import render_template
 
 app = flask.Flask(__name__)
 
+def add_missing_days(data):
+    max = len(data[0])
+    for i in range(1, 7):
+        if (len(data[i]) < max):
+            for j in range(max - len(data[i])):
+                data[i].append({'humanTime': '0', 'value': 0})
+
+    return data
+
 def get_data():
     days = []
     for i in range(100):
@@ -19,7 +28,9 @@ def get_data():
         hours = int(i)
         dataToReturn[i%7].append({'humanTime': f'{hours}:{minutes}', 'value': days[i]})
 
-    return dataToReturn
+    data = add_missing_days(dataToReturn)
+
+    return data
 
 @app.route('/')
 def index():
