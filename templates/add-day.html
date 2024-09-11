@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Day</title>
+</head>
+<body>
+    <h1>Add Day</h1>
+    
+    <form id="add-day-form" action="/add-day-save" method="post">
+        <label for="days">Select a day:</label>
+        <select id="days" name="days" autofocus>
+            {% for day in days %}
+                <option value="{{ day.database }}">{{ day.human }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        
+        <label for="hours">Hours:</label>
+        <input type="number" id="hours" name="hours" value = 0 required>
+        <br><br>
+        
+
+        <input type="hidden" id="minutes" name="minutes" required>
+        
+        <button type="button" onclick="document.getElementById('minutes').value = 0; document.getElementById('add-day-form').submit()">00</button>
+        <button type="button" onclick="document.getElementById('minutes').value = 15; document.getElementById('add-day-form').submit()">15</button>
+        <button type="button" onclick="document.getElementById('minutes').value = 30; document.getElementById('add-day-form').submit()">30</button>
+        <button type="button" onclick="document.getElementById('minutes').value = 45; document.getElementById('add-day-form').submit()">45</button>
+        
+        <br><br>
+        
+        <input type="submit" value="Submit">
+    </form>
+
+</body>
+</html>

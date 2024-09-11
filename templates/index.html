@@ -29,7 +29,14 @@
                 // Reload the page every hour (3600000 milliseconds)
                 setInterval(function() {
                     location.reload();
-                }, 60*60*1000);
+                }, 3600000);
+
+                // Redirect to add-day when 'q' is pressed
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === 'q' || event.key === 'Q') {
+                        window.location.href = 'add-day';
+                    }
+                });
             });
         </script>
     </body>
