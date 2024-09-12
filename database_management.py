@@ -65,8 +65,8 @@ class Database:
         days = []
         numberOfDays = numberOfWeeks * 7
         weekday = today.weekday()
-        days_to_subtract = (weekday + 1) % 7
-        start_date = today - datetime.timedelta(days=days_to_subtract + numberOfDays)
+        days_to_subtract = (weekday + 1) % 7 + numberOfDays
+        start_date = today - datetime.timedelta(days=days_to_subtract)
 
         for i in range(days_to_subtract):
             date = start_date - datetime.timedelta(days=i)
