@@ -53,6 +53,7 @@ class Database:
             dayData.set_exists(False)
         else:
             dayData.set_value(data[1])
+            dayData.set_exists(True)
     
         cursor.close()
         connection.close()
@@ -67,9 +68,9 @@ class Database:
         weekday = today.weekday()
         days_to_subtract = (weekday + 1) % 7 + numberOfDays
         start_date = today - datetime.timedelta(days=days_to_subtract)
-
-        for i in range(days_to_subtract):
-            date = start_date - datetime.timedelta(days=i)
+        print(start_date.strftime("%Y-%m-%d"))
+        for i in range(days_to_subtract + 1):
+            date = start_date + datetime.timedelta(days=i)
             date = date.strftime("%Y-%m-%d")
             dayData = self.get_day(date)
             days.append(dayData)

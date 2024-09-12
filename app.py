@@ -18,7 +18,7 @@ def add_missing_days(data):
     return data
 
 def get_data():
-    days = db_manager.get_last_weeks(7)
+    days = db_manager.get_last_weeks(10)
 
 
     dataToReturn = []
@@ -30,9 +30,9 @@ def get_data():
         day = days[i]
         dataToReturn[i%7].append(day.export_to_dict())
 
-    data = add_missing_days(dataToReturn)
+    #data = add_missing_days(dataToReturn)
 
-    return data
+    return dataToReturn
 
 def get_days_for_input_form():
     today = datetime.datetime.now() - datetime.timedelta(hours=4)

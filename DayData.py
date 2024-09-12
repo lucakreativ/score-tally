@@ -4,9 +4,9 @@ class DayData:
         self.exists = exists
 
     def convert_to_human_time(self):
-        hours = self.value // 60
-        minutes = self.value % 60
-        return f"{hours:02d}:{minutes:02d}"
+        hours = int(self.value)
+        minutes = int((self.value * 60) % 60)
+        return f"{hours}:{minutes:02d}"
 
     def set_value(self, value):
         self.value = value
@@ -16,6 +16,6 @@ class DayData:
 
     def export_to_dict(self):
         if self.exists:
-            return {'humanTime': self.value, 'value': self.value}
+            return {'humanTime': self.convert_to_human_time(), 'value': self.value}
         else:
-            return {'humanTime': self.convert_to_human_time(), 'value': 0}
+            return {'humanTime': '', 'value': 0}
