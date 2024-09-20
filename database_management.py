@@ -91,7 +91,7 @@ class Database:
         weekday = today.weekday()
         days_to_subtract = (weekday) % 7 + numberOfDays
         start_date = today - datetime.timedelta(days=days_to_subtract)
-        print(start_date.strftime("%Y-%m-%d"))
+
         for i in range(days_to_subtract + 1):
             date = start_date + datetime.timedelta(days=i)
             date = date.strftime("%Y-%m-%d")
