@@ -105,6 +105,9 @@ def add_day_save():
     
     date = request.form['days']
     hours = int(request.form['hours'])
+    minutes = 0
+    if request.form["minutes"] != "":
+        minutes = int(request.form['minutes'])
     minutes = int(request.form['minutes'])
     value = hours + minutes / 60.0
 
