@@ -71,9 +71,12 @@ class Database:
     
         if data == None:
             dayData.set_exists(False)
+            
         else:
             dayData.set_value(data[1])
             dayData.set_exists(True)
+            if data[1] == 0:
+                dayData.set_exists(False)
     
         cursor.close()
         connection.close()

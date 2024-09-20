@@ -9,7 +9,7 @@
             {% for row in data %}
                 <div id="day-container">
                     {% for time in row %}
-                        <div class="day" data-time="{{ time.value }}">{{ time.humanTime }}</div>
+                        <div class="day" data-time="{{ time.value }}"><p>{{ time.humanTime }}</p></div>
                     {% endfor %}
                 </div>
             {% endfor %}
