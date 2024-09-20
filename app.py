@@ -22,8 +22,8 @@ db_manager = Database()
 def initialisation():
     credentials.scoreTallyUrl = credentials.scoreTallyUrl[::-1].strip("/")[::-1]
 
-    #response = requests.post(f"https://api.telegram.org/bot{credentials.botToken}/setWebhook", data = {'url' : credentials.scoreTallyUrl + '/webhook', 'secret_token' : app.secret_key})
-    #print(response.text)
+    response = requests.post(f"https://api.telegram.org/bot{credentials.botToken}/setWebhook", data = {'url' : credentials.scoreTallyUrl + '/webhook', 'secret_token' : app.secret_key})
+    print(response.text)
 
 
 def add_missing_days(data):
@@ -75,7 +75,7 @@ def index():
 def hello():
     data = request.get_json()
 
-    if request.headers.get('X-Telegram-Bot-Api-Secret-Token') == app.secret_key or True:
+    if request.headers.get('X-Telegram-Bot-Api-Secret-Token') == app.secret_key:
         unixTime = data['message']['date']
         text = data['message']['text']
 
