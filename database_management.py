@@ -18,6 +18,26 @@ class Database:
         
         self.connection.commit()
 
+    def add_day_telegram_addition(self, unixTime, value):
+        date = datetime.datetime.fromtimestamp(unixTime-60*60*4).strftime("%Y-%m-%d")
+        self.add_day_addition(date, value)
+
+    def add_day_addition(self, date, value):
+        try:
+            db_path = "database.db"
+            connection = sqlite3.connect(db_path)
+            cursor = connection.cursor()
+
+            cursor.execute('''
+                INSERT INTO data (date, value) VALUES (?, ?)
+                ''', (date, value))
+            connection.commit()
+        except sqlite3.IntegrityError:
+            cursor.execute('''UPDATE data SET value = value + ? WHERE date = ?''', (value, date))
+            connection.commit()
+        finally:
+            cursor.close()
+            connection.close()
 
     def add_day(self, date, value):
         try:
@@ -66,7 +86,7 @@ class Database:
         days = []
         numberOfDays = numberOfWeeks * 7
         weekday = today.weekday()
-        days_to_subtract = (weekday + 1) % 7 + numberOfDays
+        days_to_subtract = (weekday) % 7 + numberOfDays
         start_date = today - datetime.timedelta(days=days_to_subtract)
         print(start_date.strftime("%Y-%m-%d"))
         for i in range(days_to_subtract + 1):

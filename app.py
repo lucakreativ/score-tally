@@ -1,12 +1,30 @@
-import flask
+import json
 from flask import render_template, redirect, request, url_for
+import flask
 import datetime
+import credentials
+import os
+import requests
+
 from database_management import Database
 from DayData import DayData
+import secrets
 
 app = flask.Flask(__name__)
 
+scoreTallyUrl = os.environ.get('SCORE_TALLY_URL')
+botToken = os.environ.get('BOT_TOKEN')
+
+app.secret_key = secrets.token_hex()
+
 db_manager = Database()
+
+def initialisation():
+    credentials.scoreTallyUrl = credentials.scoreTallyUrl[::-1].strip("/")[::-1]
+
+    #response = requests.post(f"https://api.telegram.org/bot{credentials.botToken}/setWebhook", data = {'url' : credentials.scoreTallyUrl + '/webhook', 'secret_token' : app.secret_key})
+    #print(response.text)
+
 
 def add_missing_days(data):
     max = len(data[0])
@@ -53,6 +71,30 @@ def index():
     return render_template('index.html', data=get_data())
 
 
+@app.route('/webhook', methods=['POST'])
+def hello():
+    data = request.get_json()
+
+    if request.headers.get('X-Telegram-Bot-Api-Secret-Token') == app.secret_key or True:
+        unixTime = data['message']['date']
+        text = data['message']['text']
+
+        try:
+            if text.find(" ") != -1:
+                value = float(text.split(" ")[0])
+                value += float((int(text.split(" ")[1])%4) * 0.25)
+            else:
+                text = text.replace(",", ".")
+                value = float(text)
+                
+            db_manager.add_day_telegram_addition(unixTime, value)
+        except ValueError:
+            re = requests.post(f"https://api.telegram.org/bot{credentials.botToken}/sendMessage", data = {'chat_id' : data['message']['from']['id'], 'text' : "Could not parse value."})
+    
+    
+
+    return "success", 200
+
 @app.route('/add-day')
 def add_day():
     return render_template('add-day.html', days=get_days_for_input_form())
@@ -73,4 +115,5 @@ def add_day_save():
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    initialisation()
+    app.run(host="0.0.0.0", debug=False, port=5003)
