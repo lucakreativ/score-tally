@@ -1,10 +1,12 @@
-import json
-from flask import render_template, redirect, request, url_for
+from flask import render_template, redirect, request, send_file, url_for
+from io import BytesIO
 import flask
+import time
 import datetime
 import credentials
 import os
 import requests
+import imgkit
 
 from database_management import Database
 from DayData import DayData
@@ -98,6 +100,20 @@ def hello():
 @app.route('/add-day')
 def add_day():
     return render_template('add-day.html', days=get_days_for_input_form())
+
+
+@app.route('/get-image')
+def get_image():
+    path = "images/" + str(time.time()) + ".png"
+
+    config = {
+        "width": "1920",
+        "height": "1080",
+    }
+
+    imgkit.from_url('https://scoretally.eckenfels.xyz', path, options=config)
+
+    return send_file(path, mimetype='image/png', download_name='scoretally.png')
 
 
 @app.route('/add-day-save', methods=['POST'])
