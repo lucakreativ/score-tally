@@ -1,3 +1,6 @@
+import math
+
+
 class DayData:
     def __init__(self, value = 0, exists = True):
         self.value = value
@@ -16,6 +19,6 @@ class DayData:
 
     def export_to_dict(self):
         if self.exists:
-            return {'humanTime': self.convert_to_human_time(), 'value': self.value}
+            return {'humanTime': self.convert_to_human_time(), 'value': self.value, "activitylevel": min(math.ceil(self.value), 4)}
         else:
             return {'humanTime': '', 'value': 0}
