@@ -54,17 +54,21 @@ html {
 }
 
 #activity1 {
-    background-color: #2FC248;
+    background-color: #196927;
+    opacity: 0.9;
 }
 
 #activity2 {
-    background-color: #28A53D;
+    background-color: #218732;
+    opacity: 0.9;
 }
 
 #acitivity3 {
-    background-color: #218732;
+    background-color: #28A53D;
+    opacity: 0.9;
 }
 
 #activity4 {
-    background-color: #196927;
+    background-color: #2FC248;
+    opacity: 0.9;
 }
