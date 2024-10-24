@@ -53,22 +53,22 @@ html {
     opacity: 0.7;
 }
 
-#activity1 {
+#activity0 {
     background-color: #196927;
-    opacity: 0.9;
+    opacity: 0.95;
+}
+
+#activity1 {
+    background-color: #218732;
+    opacity: 0.95;
 }
 
 #activity2 {
-    background-color: #218732;
-    opacity: 0.9;
+    background-color: #28A53D;
+    opacity: 0.95;
 }
 
 #activity3 {
-    background-color: #28A53D;
-    opacity: 0.9;
-}
-
-#activity4 {
     background-color: #2FC248;
-    opacity: 0.9;
+    opacity: 0.95;
 }
