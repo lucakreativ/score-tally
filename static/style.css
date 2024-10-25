@@ -48,27 +48,42 @@ html {
     border-radius: 15px;
 }
 
-#activity {
-    background-color: rgba(36, 35, 35, 0.774);
-    opacity: 0.7;
+#activity0, #activity1, #activity2, #activity3, #activity4, #activity5, #activity6, #activity7, #activity8 {
+    opacity: 1;
 }
 
 #activity0 {
-    background-color: #196927;
-    opacity: 0.95;
+    background-color: hwb(130 17% 70% / 0.7);
 }
 
 #activity1 {
-    background-color: #218732;
-    opacity: 0.95;
+    background-color: hwb(130 17% 62% / 0.73);
 }
 
 #activity2 {
-    background-color: #28A53D;
-    opacity: 0.95;
+    background-color: hwb(130 17% 54% / 0.76);
 }
 
 #activity3 {
-    background-color: #2FC248;
-    opacity: 0.95;
+    background-color: hwb(130 17% 46% / 0.79);
+}
+
+#activity4 {
+    background-color: hwb(130 17% 38% / 0.82);
+}
+
+#activity5 {
+    background-color: hwb(130 17% 30% / 0.85);
+}
+
+#activity6 {
+    background-color: hwb(130 20% 22% / 0.9);
+}
+
+#activity7 {
+    background-color: hwb(130 20% 14% / 0.95);
+}
+
+#activity8 {
+    background-color: hwb(130 20% 6% / 1);
 }

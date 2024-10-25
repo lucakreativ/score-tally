@@ -19,6 +19,7 @@ class DayData:
 
     def export_to_dict(self):
         if self.exists:
-            return {'humanTime': self.convert_to_human_time(), 'value': self.value, "activitylevel": str(min(math.floor(self.value), 3))}
+            activitylevel = math.floor(min(self.value, 4)/4*8)
+            return {'humanTime': self.convert_to_human_time(), 'value': self.value, "activitylevel": activitylevel}
         else:
             return {'humanTime': '', 'value': 0}
