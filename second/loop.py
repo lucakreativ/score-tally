@@ -99,5 +99,6 @@ def loop():
 
 if __name__ == "__main__":
     process_messages()
+    send_image_via_telegram(1037787051, "activity_2025.png")
     init_db()
     loop()
