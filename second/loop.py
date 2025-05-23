@@ -98,8 +98,9 @@ def loop():
 
 
 if __name__ == "__main__":
+    init_db()
     process_messages()
     plot_activity(datetime.date.today().year)
     send_image_via_telegram(1037787051, "activity_"+str(datetime.date.today().year) +".png")
-    init_db()
+
     loop()
