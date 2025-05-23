@@ -7,6 +7,7 @@ import datetime
 import time
 import smtplib
 from email.message import EmailMessage
+from activity_diagram import plot_activity
 
 botToken = credentials.botToken
 
@@ -78,7 +79,6 @@ def loop():
         if now >= next_five:
             print("hi it's 5 o clock")
             # Generate activity diagram for current year
-            from activity_diagram import plot_activity
             year = now.year
             plot_activity(year)
             img_path = f'activity_{year}.png'
@@ -99,6 +99,7 @@ def loop():
 
 if __name__ == "__main__":
     process_messages()
-    send_image_via_telegram(1037787051, "activity_2025.png")
+    plot_activity(datetime.date.today().year)
+    send_image_via_telegram(1037787051, "activity_"+str(datetime.date.today().year) +".png")
     init_db()
     loop()
