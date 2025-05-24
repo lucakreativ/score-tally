@@ -1,2 +1,2 @@
 botToken = ''
-scoreTallyUrl = ''
+scoreTallyUrl = 'scoretalle'

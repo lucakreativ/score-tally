@@ -44,7 +44,7 @@ def get_all_activities():
 def get_box_color(val, weekday):
     # Weekdays: 0-4 (Mo-Fr), Weekend: 5-6 (Sa-So)
     if weekday < 5:
-        if val >= 10:
+        if val >= 8:
             # Brightest green
             return (50, 255, 50)
         else:
@@ -73,8 +73,8 @@ def get_activity_matrix(year):
         prev_day = day - datetime.timedelta(days=1)
         prev_val = get_activity(prev_day.isoformat()) if prev_day >= first_day else 0
         # Apply bonus if previous day was high
-        if weekday < 5 and prev_val > 10:
-            prev_val -= 10
+        if weekday < 5 and prev_val > 8:
+            prev_val -= 8
             count += prev_val * (5/7)
         elif weekday >= 5 and prev_val > 3:
             prev_val -= 3
