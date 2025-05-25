@@ -60,7 +60,7 @@ def get_box_color(val, weekday):
 
 def get_activity_matrix(year):
     # Returns a 7 x 53 matrix (weekdays x weeks)
-    first_day = datetime.date(year, 1, 1)
+    first_day = datetime.date(year - 1, 1, 1)
     last_day = datetime.date(year, 12, 31)
     matrix = np.zeros((7, 53), dtype=float)
     day = first_day
@@ -90,6 +90,13 @@ def plot_activity(year):
     margin_top = 0  # Removed top padding
     weekday_padding = 2  # Reduce this value to shrink the gap
     box_offset = 0  # Set to 0 for no extra gap
+    # Only show the current week and the previous 10 weeks
+    total_weeks = matrix.shape[1]
+    import datetime
+    today = datetime.date.today()
+    current_week = today.isocalendar()[1] - 1  # 0-based index
+    start_week = max(0, current_week - 10)
+    matrix = matrix[:, start_week:current_week+1]
     width = margin_left + cell_size * matrix.shape[1]
     height = margin_top + cell_size * matrix.shape[0]
     img = Image.new('RGB', (width, height), (255, 255, 255))
@@ -100,6 +107,7 @@ def plot_activity(year):
         font = ImageFont.truetype('DejaVuSans.ttf', 14)
     except:
         font = ImageFont.load_default()
+
     for i, day in enumerate(WEEKDAYS_DE):
         draw.text((5, margin_top + i * cell_size + weekday_padding), day, fill='black', font=font)
     # Draw cells

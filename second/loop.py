@@ -82,17 +82,36 @@ def loop():
             year = now.year
             plot_activity(year)
             img_path = f'activity_{year}.png'
-            # Send email with the generated image
-            
 
+            # Calculate how much time is needed today for a green box, including bonus from yesterday
+            today = datetime.date.today()
+            weekday = today.weekday()
+            from activity_diagram import get_activity
+            current_val = get_activity(today.isoformat())
+            # Get yesterday's value
+            yesterday = today - datetime.timedelta(days=1)
+            yesterday_val = get_activity(yesterday.isoformat())
+            bonus = 0
+            if weekday < 5:
+                if yesterday_val >= 8:
+                    bonus = (yesterday_val - 8) * (5/7)
+                needed = max(0, 8 - (current_val + bonus))
+            else:
+                if yesterday_val >= 3:
+                    bonus = (yesterday_val - 3) * (5/7)
+                needed = max(0, 3 - (current_val + bonus))
+            if needed == 0:
+                green_msg = "Today's box is already green!"
+            else:
+                green_msg = f"You need {needed:.2f} more hours today for a green box."
 
-            print(f"Sent activity diagram for {year} via email.")
-            # Send image via Telegram to the last chat_id if available
+            # Send image via Telegram to the last chat_id if available, with green box info
             try:
                 if last_chat_id:
-                    send_image_via_telegram(last_chat_id, img_path, caption=f"Activity Diagram {year}")
+                    send_image_via_telegram(last_chat_id, img_path, caption=f"Activity Diagram {year}\n{green_msg}")
             except Exception as e:
                 print(f"Could not send image via Telegram: {e}")
+            print(f"Sent activity diagram for {year} via email.")
             next_five += datetime.timedelta(days=1)
         time.sleep(10)
 
