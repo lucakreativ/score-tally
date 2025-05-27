@@ -66,17 +66,23 @@ def get_activity_matrix(year):
     day = first_day
     prev_val = 0
     while day <= last_day:
+        if day.month == 5 and day.day == 26 and day.year == 2025:
+            pri = True
+        else:
+            pri = False
         week = day.isocalendar()[1] - 1
         weekday = day.weekday()
         count = get_activity(day.isoformat())
         # Get previous day's value
         prev_day = day - datetime.timedelta(days=1)
-        prev_val = get_activity(prev_day.isoformat()) if prev_day >= first_day else 0
+        prev_val = get_activity(prev_day.isoformat())
+        if pri:
+            print(f"Processing {day.isoformat()}: count={count}, prev_val={prev_val}, week={week}, weekday={weekday}")
         # Apply bonus if previous day was high
-        if weekday < 5 and prev_val > 8:
+        if (weekday - 1) % 7 < 5 and prev_val > 8:
             prev_val -= 8
             count += prev_val * (5/7)
-        elif weekday >= 5 and prev_val > 3:
+        elif (weekday - 1) % 7 >= 5 and prev_val > 3:
             prev_val -= 3
             count += prev_val * (5/7)
         matrix[weekday, week] = count
