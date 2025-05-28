@@ -5,6 +5,7 @@ import os
 from activity_diagram import set_activity, init_db
 import datetime
 import time
+import math
 import smtplib
 from email.message import EmailMessage
 from activity_diagram import plot_activity
@@ -103,7 +104,7 @@ def loop():
             else:
                 needed = max(0, 3 - (current_val + bonus))
             hours_n = int(needed)
-            minutes_n = int((needed * 60) % 60)
+            minutes_n = math.ceil((needed * 60) % 60)
             hours_b = int(needed)
             minutes_b = int((needed * 60) % 60)
             if needed == 0:
