@@ -92,18 +92,24 @@ def loop():
             yesterday = today - datetime.timedelta(days=1)
             yesterday_val = get_activity(yesterday.isoformat())
             bonus = 0
+
+            if yesterday.weekday < 5:
+                bonus = max(0, yesterday_val - 8) * (5/7)
+            else:
+                bonus = max(0, yesterday_val - 3) * (5/7)
+
             if weekday < 5:
-                if yesterday_val >= 8:
-                    bonus = (yesterday_val - 8) * (5/7)
                 needed = max(0, 8 - (current_val + bonus))
             else:
-                if yesterday_val >= 3:
-                    bonus = (yesterday_val - 3) * (5/7)
                 needed = max(0, 3 - (current_val + bonus))
+            hours_n = int(needed)
+            minutes_n = int((needed * 60) % 60)
+            hours_b = int(needed)
+            minutes_b = int((needed * 60) % 60)
             if needed == 0:
                 green_msg = "Today's box is already green!"
             else:
-                green_msg = f"You need {needed:.2f} more hours today for a green box."
+                green_msg = f"""Bonus: {hours_b}h {minutes_b}m\nNeeded: {hours_n}h {minutes_n}m"""
 
             # Send image via Telegram to the last chat_id if available, with green box info
             try:
