@@ -39,7 +39,7 @@ def process_messages():
                 time_val = hour + minute / 60
                 
                 # Calculate the date string for the given day offset
-                date = (datetime.date.today() - datetime.timedelta(days=day)).isoformat()
+                date = (datetime.date.today() -datetime.timedelta(hours=4) - datetime.timedelta(days=day)).isoformat()
 
                 print(date, time_val)
                 set_activity(date, time_val)
