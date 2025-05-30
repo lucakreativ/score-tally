@@ -77,6 +77,27 @@ def send_image_via_telegram(chat_id, image_path, caption=None):
         logging.error(f"[SIVT-1] Exception: {e}\n{traceback.format_exc()}")
         exit(1)
 
+def get_streak():
+    from activity_diagram import get_activity
+    import datetime
+    today = datetime.date.today()
+    streak = 0
+    for i in range(0, 365):
+        day = today - datetime.timedelta(days=i)
+        weekday = day.weekday()
+        val = get_activity(day.isoformat())
+        if weekday < 5:
+            if val >= 8:
+                streak += 1
+            else:
+                break
+        else:
+            if val >= 3:
+                streak += 1
+            else:
+                break
+    return streak
+
 def loop():
     try:
         last_process_messages = time.time()
@@ -127,10 +148,11 @@ def loop():
                         minutes_n = math.ceil((needed * 60) % 60)
                         hours_b = int(needed)
                         minutes_b = int((needed * 60) % 60)
+                        streak = get_streak()
                         if needed == 0:
-                            green_msg = "Today's box is already green!"
+                            green_msg = f"Today's box is already green!\nStreak: {streak}"
                         else:
-                            green_msg = f"""Bonus: {hours_b}h {minutes_b}m\nNeeded: {hours_n}h {minutes_n}m"""
+                            green_msg = f"Bonus: {hours_b}h {minutes_b}m\nNeeded: {hours_n}h {minutes_n}m\nStreak: {streak}"
                     except Exception as e:
                         logging.error(f"[LOOP-GREEN-1] Exception: {e}\n{traceback.format_exc()}")
                         green_msg = "Error calculating needed time."
