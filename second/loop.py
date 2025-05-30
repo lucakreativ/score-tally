@@ -29,7 +29,6 @@ def process_messages():
         try:
             response = requests.get(f"https://api.telegram.org/bot{botToken}/getUpdates", data = {'offset' : offset, 'limit' : 1, 'timeout' : 0})
             data = response.json()
-            print(1/0)
             if len(data['result']) == 0:
                 newMessageAvailable = False
             else:
