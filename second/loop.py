@@ -10,6 +10,7 @@ import smtplib
 from email.message import EmailMessage
 from activity_diagram import plot_activity
 import logging
+import traceback
 
 logging.basicConfig(filename='score_tally.log', level=logging.INFO, 
                     format='%(asctime)s %(levelname)s %(message)s')
@@ -28,6 +29,7 @@ def process_messages():
         try:
             response = requests.get(f"https://api.telegram.org/bot{botToken}/getUpdates", data = {'offset' : offset, 'limit' : 1, 'timeout' : 0})
             data = response.json()
+            print(1/0)
             if len(data['result']) == 0:
                 newMessageAvailable = False
             else:
@@ -50,15 +52,17 @@ def process_messages():
                     set_activity(date, time_val)
                     print(f"Saved {time_val} hours for {date}")
                 except ValueError as e:
-                    logging.error(f"[PM-1] ValueError: {e}")
+                    logging.error(f"[PM-1] ValueError: {e}\n{traceback.format_exc()}")
                     print("Invalid input format. Please use 'day hour minute'.")
                     response_text = "Invalid format. Please use day hour minute."
                     response = requests.post(f"https://api.telegram.org/bot{botToken}/sendMessage", data = {'chat_id' : chat_id, 'text' : response_text})
                     continue
                 except Exception as e:
-                    logging.error(f"[PM-2] Exception: {e}")
+                    logging.error(f"[PM-2] Exception: {e}\n{traceback.format_exc()}")
+                    exit(1)
         except Exception as e:
-            logging.error(f"[PM-3] Exception: {e}")
+            logging.error(f"[PM-3] Exception: {e}\n{traceback.format_exc()}")
+            exit(1)
 
 def send_image_via_telegram(chat_id, image_path, caption=None):
     try:
@@ -71,7 +75,8 @@ def send_image_via_telegram(chat_id, image_path, caption=None):
             response = requests.post(url, files=files, data=data)
         print(f"Telegram sendPhoto response: {response.text}")
     except Exception as e:
-        logging.error(f"[SIVT-1] Exception: {e}")
+        logging.error(f"[SIVT-1] Exception: {e}\n{traceback.format_exc()}")
+        exit(1)
 
 def loop():
     try:
@@ -85,6 +90,7 @@ def loop():
             try:
                 # Process messages every hour
                 if time.time() - last_process_messages > 60 * 60:
+                    logging.info("Processing Messages")
                     process_messages()
                     last_process_messages = time.time()
                 # Check if it's time to print at 5 o'clock
@@ -97,7 +103,8 @@ def loop():
                     try:
                         plot_activity(year)
                     except Exception as e:
-                        logging.error(f"[LOOP-PA-1] Exception: {e}")
+                        logging.error(f"[LOOP-PA-1] Exception: {e}\n{traceback.format_exc()}")
+                        exit(1)
                     img_path = f'activity_{year}.png'
                     # Calculate how much time is needed today for a green box, including bonus from yesterday
                     today = datetime.date.today()
@@ -126,22 +133,26 @@ def loop():
                         else:
                             green_msg = f"""Bonus: {hours_b}h {minutes_b}m\nNeeded: {hours_n}h {minutes_n}m"""
                     except Exception as e:
-                        logging.error(f"[LOOP-GREEN-1] Exception: {e}")
+                        logging.error(f"[LOOP-GREEN-1] Exception: {e}\n{traceback.format_exc()}")
                         green_msg = "Error calculating needed time."
+                        exit(1)
                     # Send image via Telegram to the last chat_id if available, with green box info
                     try:
                         if last_chat_id:
                             send_image_via_telegram(last_chat_id, img_path, caption=f"Activity Diagram {year}\n{green_msg}")
                     except Exception as e:
-                        logging.error(f"[LOOP-SEND-1] Exception: {e}")
+                        logging.error(f"[LOOP-SEND-1] Exception: {e}\n{traceback.format_exc()}")
                         print(f"Could not send image via Telegram: {e}")
+                        exit(1)
                     print(f"Sent activity diagram for {year} via email.")
                     next_five += datetime.timedelta(days=1)
                 time.sleep(10)
             except Exception as e:
-                logging.error(f"[LOOP-1] Exception: {e}")
+                logging.error(f"[LOOP-1] Exception: {e}\n{traceback.format_exc()}")
+                exit(1)
     except Exception as e:
-        logging.error(f"[LOOP-2] Exception: {e}")
+        logging.error(f"[LOOP-2] Exception: {e}\n{traceback.format_exc()}")
+        exit(1)
 
 if __name__ == "__main__":
     try:
@@ -151,4 +162,5 @@ if __name__ == "__main__":
         send_image_via_telegram(1037787051, "activity_"+str(datetime.date.today().year) +".png")
         loop()
     except Exception as e:
-        logging.error(f"[MAIN-1] Exception: {e}")
+        logging.error(f"[MAIN-1] Exception: {e}\n{traceback.format_exc()}")
+        exit(1)
