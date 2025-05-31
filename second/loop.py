@@ -136,7 +136,7 @@ def loop():
                         yesterday = today - datetime.timedelta(days=1)
                         yesterday_val = get_activity(yesterday.isoformat())
                         bonus = 0
-                        if yesterday.weekday < 5:
+                        if yesterday.weekday() < 5:
                             bonus = max(0, yesterday_val - 8) * (5/7)
                         else:
                             bonus = max(0, yesterday_val - 3) * (5/7)
