@@ -82,7 +82,7 @@ def get_streak():
     import datetime
     today = datetime.date.today()
     streak = 0
-    for i in range(0, 365):
+    for i in range(1, 365):
         day = today - datetime.timedelta(days=i)
         weekday = day.weekday()
         val = get_activity(day.isoformat())
