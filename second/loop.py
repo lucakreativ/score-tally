@@ -146,8 +146,8 @@ def loop():
                             needed = max(0, 3 - (current_val + bonus))
                         hours_n = int(needed)
                         minutes_n = math.ceil((needed * 60) % 60)
-                        hours_b = int(needed)
-                        minutes_b = int((needed * 60) % 60)
+                        hours_b = int(bonus)
+                        minutes_b = int((bonus * 60) % 60)
                         streak = get_streak()
                         if needed == 0:
                             green_msg = f"Today's box is already green!\nStreak: {streak}"
