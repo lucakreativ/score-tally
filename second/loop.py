@@ -72,6 +72,8 @@ def send_image_via_telegram(chat_id, image_path, caption=None):
             if caption:
                 data['caption'] = caption
             response = requests.post(url, files=files, data=data)
+            logging.info(f"[SIVT-1] Sending image {response.status_code} with response:")
+            logging.info(response.text)
         print(f"Telegram sendPhoto response: {response.text}")
     except Exception as e:
         logging.error(f"[SIVT-1] Exception: {e}\n{traceback.format_exc()}")
@@ -98,7 +100,7 @@ def get_streak():
                 break
     return streak
 
-def loop():
+def loop(chat_id):
     try:
         last_process_messages = time.time()
         # Calculate the next 5 o'clock (05:00) time
@@ -159,8 +161,7 @@ def loop():
                         exit(1)
                     # Send image via Telegram to the last chat_id if available, with green box info
                     try:
-                        if last_chat_id:
-                            send_image_via_telegram(last_chat_id, img_path, caption=f"Activity Diagram {year}\n{green_msg}")
+                        send_image_via_telegram(chat_id, img_path, caption=f"Activity Diagram {year}\n{green_msg}")
                     except Exception as e:
                         logging.error(f"[LOOP-SEND-1] Exception: {e}\n{traceback.format_exc()}")
                         print(f"Could not send image via Telegram: {e}")
@@ -181,7 +182,7 @@ if __name__ == "__main__":
         process_messages()
         plot_activity(datetime.date.today().year)
         send_image_via_telegram(1037787051, "activity_"+str(datetime.date.today().year) +".png")
-        loop()
+        loop(1037787051)
     except Exception as e:
         logging.error(f"[MAIN-1] Exception: {e}\n{traceback.format_exc()}")
         exit(1)
