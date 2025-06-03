@@ -79,6 +79,24 @@ def send_image_via_telegram(chat_id, image_path, caption=None):
         logging.error(f"[SIVT-1] Exception: {e}\n{traceback.format_exc()}")
         exit(1)
 
+def time_for_day(day):
+    from activity_diagram import get_activity
+    yesterday = day - datetime.timedelta(days=1)
+    try:
+        bonus = 0
+        val = get_activity(day.isoformat())
+        yes_val = get_activity(yesterday.isoformat())
+        weekday = day.weekday()
+        if (yesterday.weekday() - 1) % 7 < 5:
+            bonus = max(0, 8 - yes_val) * (5/7)
+        else:
+            bonus = max(0, 3 - yes_val) * (5/7)
+        
+        return val + bonus
+    except Exception as e:
+        logging.error(f"[TFD-1] Exception: {e}\n{traceback.format_exc()}")
+        return 0
+
 def get_streak():
     from activity_diagram import get_activity
     import datetime
@@ -87,7 +105,7 @@ def get_streak():
     for i in range(1, 365):
         day = today - datetime.timedelta(days=i)
         weekday = day.weekday()
-        val = get_activity(day.isoformat())
+        val = time_for_day(day)
         if weekday < 5:
             if val >= 8:
                 streak += 1
