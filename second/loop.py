@@ -176,7 +176,7 @@ def loop(chat_id):
                     except Exception as e:
                         logging.error(f"[LOOP-GREEN-1] Exception: {e}\n{traceback.format_exc()}")
                         green_msg = "Error calculating needed time."
-                        exit(1)
+
                     # Send image via Telegram to the last chat_id if available, with green box info
                     try:
                         send_image_via_telegram(chat_id, img_path, caption=f"Activity Diagram {year}\n{green_msg}")
