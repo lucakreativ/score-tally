@@ -85,6 +85,7 @@ def time_for_day(day):
     try:
         bonus = 0
         val = get_activity(day.isoformat())
+        return val
         yes_val = get_activity(yesterday.isoformat())
         weekday = day.weekday()
         if (yesterday.weekday() - 1) % 7 < 5:
@@ -106,16 +107,10 @@ def get_streak():
         day = today - datetime.timedelta(days=i)
         weekday = day.weekday()
         val = time_for_day(day)
-        if weekday < 5:
-            if val >= 8:
-                streak += 1
-            else:
-                break
+        if val >= 1:
+            streak += 1
         else:
-            if val >= 3:
-                streak += 1
-            else:
-                break
+            break
     return streak
 
 def loop(chat_id):
@@ -151,28 +146,8 @@ def loop(chat_id):
                     weekday = today.weekday()
                     from activity_diagram import get_activity
                     try:
-                        current_val = get_activity(today.isoformat())
-                        # Get yesterday's value
-                        yesterday = today - datetime.timedelta(days=1)
-                        yesterday_val = get_activity(yesterday.isoformat())
-                        bonus = 0
-                        if yesterday.weekday() < 5:
-                            bonus = max(0, yesterday_val - 8) * (5/7)
-                        else:
-                            bonus = max(0, yesterday_val - 3) * (5/7)
-                        if weekday < 5:
-                            needed = max(0, 8 - (current_val + bonus))
-                        else:
-                            needed = max(0, 3 - (current_val + bonus))
-                        hours_n = int(needed)
-                        minutes_n = math.ceil((needed * 60) % 60)
-                        hours_b = int(bonus)
-                        minutes_b = int((bonus * 60) % 60)
                         streak = get_streak()
-                        if needed == 0:
-                            green_msg = f"Today's box is already green!\nStreak: {streak}"
-                        else:
-                            green_msg = f"Bonus: {hours_b}h {minutes_b}m\nNeeded: {hours_n}h {minutes_n}m\nStreak: {streak}"
+                        green_msg = "Current streak: " + str(streak) + "\n"
                     except Exception as e:
                         logging.error(f"[LOOP-GREEN-1] Exception: {e}\n{traceback.format_exc()}")
                         green_msg = "Error calculating needed time."
